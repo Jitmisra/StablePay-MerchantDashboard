@@ -1,9 +1,9 @@
 "use client"
 
 import type * as React from "react"
-import Link from "next/link" // Added Link import for proper Next.js navigation
-
-import BracketsIcon from "@/components/icons/brackets" // Fixed icon imports to use individual file paths
+import Link from "next/link"
+import { Logo } from "@/components/logo"
+import BracketsIcon from "@/components/icons/brackets"
 import GearIcon from "@/components/icons/gear"
 import DotsVerticalIcon from "@/components/icons/dots-vertical"
 import { Bullet } from "@/components/ui/bullet"
@@ -68,14 +68,7 @@ export function DashboardSidebar({ className, ...props }: React.ComponentProps<t
     <Sidebar {...props} className={cn("py-sides", className)}>
       <SidebarHeader className="rounded-t-lg flex gap-3 flex-row rounded-b-none">
         <div className="flex overflow-clip size-24 shrink-0 items-center justify-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={`${process.env.NODE_ENV === 'production' ? '/StablePay-MerchantDashboard' : ''}/StablePay.svg`}
-            alt="StablePay Logo"
-            width={80}
-            height={80}
-            className="w-16 h-16 object-contain"
-          />
+          <Logo className="w-16 h-16" width={80} height={80} />
         </div>
         <div className="grid flex-1 text-left text-sm leading-tight">
           <span className="text-2xl font-serif font-bold">StablePay</span>
