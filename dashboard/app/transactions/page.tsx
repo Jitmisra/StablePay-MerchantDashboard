@@ -272,17 +272,13 @@ export default function TransactionsPage() {
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="max-w-2xl bg-card border-border/40">
-          <DialogHeader className="relative">
-            <DialogTitle className="text-3xl font-display mb-2">{selectedTransaction?.merchant}</DialogTitle>
-            <p className="text-muted-foreground font-mono">{selectedTransaction?.id}</p>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-0 top-0"
-              onClick={() => setIsModalOpen(false)}
-            >
-              <X className="size-4" />
-            </Button>
+          <DialogHeader>
+            <DialogTitle className="text-3xl font-display mb-2">
+              {selectedTransaction ? formatAddress(selectedTransaction.transactionHash) : ''}
+            </DialogTitle>
+            <p className="text-muted-foreground font-mono">
+              Block #{selectedTransaction?.blockNumber?.toString()}
+            </p>
           </DialogHeader>
 
           <div className="grid grid-cols-2 gap-8 py-6">
@@ -290,29 +286,31 @@ export default function TransactionsPage() {
               <div>
                 <div className="text-sm text-muted-foreground mb-2">STATUS</div>
                 <div className="flex items-center gap-2">
-                  <div
-                    className={`size-2 rounded-full ${
-                      selectedTransaction?.status === "completed"
-                        ? "bg-green-500"
-                        : selectedTransaction?.status === "pending"
-                          ? "bg-yellow-500"
-                          : "bg-red-500"
-                    }`}
-                  />
-                  <span className="uppercase text-lg">{selectedTransaction?.status}</span>
+                  <div className="size-2 rounded-full bg-green-500" />
+                  <span className="uppercase text-lg">Completed</span>
                 </div>
               </div>
 
               <div>
-                <div className="text-sm text-muted-foreground mb-2">MISSIONS COMPLETED</div>
-                <div className="text-2xl font-bold">{selectedTransaction?.amount}</div>
+                <div className="text-sm text-muted-foreground mb-2">AMOUNT (SC)</div>
+                <div className="text-2xl font-bold">{selectedTransaction?.amountSC} SC</div>
+              </div>
+
+              <div>
+                <div className="text-sm text-muted-foreground mb-2">AMOUNT (ETH)</div>
+                <div className="text-2xl font-bold">{parseFloat(selectedTransaction?.amountBC || '0').toFixed(6)} ETH</div>
               </div>
             </div>
 
             <div className="space-y-6">
               <div>
-                <div className="text-sm text-muted-foreground mb-2">LOCATION</div>
-                <div className="text-lg">{selectedTransaction?.location}</div>
+                <div className="text-sm text-muted-foreground mb-2">BUYER</div>
+                <div className="text-lg font-mono">{selectedTransaction?.buyer}</div>
+              </div>
+
+              <div>
+                <div className="text-sm text-muted-foreground mb-2">RECEIVER</div>
+                <div className="text-lg font-mono">{selectedTransaction?.receiver}</div>
               </div>
 
               <div>
@@ -320,26 +318,33 @@ export default function TransactionsPage() {
                 <Badge
                   variant="secondary"
                   className={`uppercase text-sm px-3 py-1 ${
-                    selectedTransaction?.risk === "high"
+                    getRiskLevel(selectedTransaction?.amountSC || '0') === "high"
                       ? "bg-primary/20 text-primary border-primary/40"
-                      : selectedTransaction?.risk === "medium"
+                      : getRiskLevel(selectedTransaction?.amountSC || '0') === "medium"
                         ? "bg-muted text-muted-foreground"
-                        : "bg-red-500/20 text-red-500 border-red-500/40"
+                        : "bg-green-500/20 text-green-500 border-green-500/40"
                   }`}
                 >
-                  {selectedTransaction?.risk}
+                  {getRiskLevel(selectedTransaction?.amountSC || '0')}
                 </Badge>
               </div>
             </div>
           </div>
 
           <div className="flex gap-3 pt-4 border-t border-border/40">
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">Assign Mission</Button>
-            <Button variant="outline" className="border-border/40 bg-transparent">
-              View History
+            <Button 
+              className="bg-primary hover:bg-primary/90 text-primary-foreground"
+              onClick={() => window.open(`https://sepolia.etherscan.io/tx/${selectedTransaction?.transactionHash}`, '_blank')}
+            >
+              <ExternalLink className="size-4 mr-2" />
+              View on Etherscan
             </Button>
-            <Button variant="outline" className="border-border/40 bg-transparent">
-              Send Message
+            <Button 
+              variant="outline" 
+              className="border-border/40 bg-transparent"
+              onClick={() => setIsModalOpen(false)}
+            >
+              Close
             </Button>
           </div>
         </DialogContent>

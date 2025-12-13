@@ -2,7 +2,7 @@
 
 import type * as React from "react"
 import Link from "next/link" // Added Link import for proper Next.js navigation
-import Image from "next/image"
+
 import BracketsIcon from "@/components/icons/brackets" // Fixed icon imports to use individual file paths
 import GearIcon from "@/components/icons/gear"
 import DotsVerticalIcon from "@/components/icons/dots-vertical"
@@ -68,8 +68,9 @@ export function DashboardSidebar({ className, ...props }: React.ComponentProps<t
     <Sidebar {...props} className={cn("py-sides", className)}>
       <SidebarHeader className="rounded-t-lg flex gap-3 flex-row rounded-b-none">
         <div className="flex overflow-clip size-24 shrink-0 items-center justify-center">
-          <Image
-            src="/StablePay.svg"
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={`${process.env.NODE_ENV === 'production' ? '/StablePay-MerchantDashboard' : ''}/StablePay.svg`}
             alt="StablePay Logo"
             width={80}
             height={80}
