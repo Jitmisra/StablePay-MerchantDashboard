@@ -43,14 +43,14 @@ export default function TransactionsPage() {
     >
       <div className="flex flex-col h-full min-h-screen">
       {/* Header */}
-      <div className="flex items-center justify-between px-8 py-4 border-b border-border/40">
+      <div className="flex items-center justify-between px-4 md:px-8 py-4 border-b border-border/40">
         <div className="flex items-center gap-2 text-sm">
-          <span className="text-muted-foreground">StablePay</span>
-          <span className="text-muted-foreground">/</span>
+          <span className="text-muted-foreground hidden sm:inline">StablePay</span>
+          <span className="text-muted-foreground hidden sm:inline">/</span>
           <span className="text-primary">TRANSACTIONS</span>
         </div>
-        <div className="flex items-center gap-4">
-          <span className="text-xs text-muted-foreground">
+        <div className="flex items-center gap-2 md:gap-4">
+          <span className="text-xs text-muted-foreground hidden md:inline">
             LAST UPDATE:{" "}
             {new Date().toLocaleString("en-US", {
               month: "2-digit",
@@ -72,15 +72,15 @@ export default function TransactionsPage() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 px-8 py-8 overflow-auto">
+      <div className="flex-1 px-4 md:px-8 py-6 md:py-8 overflow-auto">
         {/* Title Section */}
-        <div className="flex items-start justify-between mb-8">
+        <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-6 md:mb-8">
           <div>
-            <h1 className="text-4xl font-serif mb-2">Transaction Network</h1>
-            <p className="text-muted-foreground">Manage and monitor payment operations</p>
+            <h1 className="text-2xl md:text-4xl font-serif mb-2">Transaction Network</h1>
+            <p className="text-sm md:text-base text-muted-foreground">Manage and monitor payment operations</p>
           </div>
-          <div className="flex gap-3">
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+          <div className="flex flex-wrap gap-2 md:gap-3">
+            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground" size="sm">
               <Filter className="size-4 mr-2" />
               Filter
             </Button>
@@ -89,72 +89,74 @@ export default function TransactionsPage() {
                 className="bg-primary hover:bg-primary/90 text-primary-foreground" 
                 onClick={fetchTransactions} 
                 disabled={loading}
+                size="sm"
               >
                 <RefreshCw className={`size-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
                 {loading ? 'Loading...' : 'See Transactions'}
               </Button>
             ) : (
-              <div className="flex gap-2">
+              <>
                 <Button 
                   variant="secondary" 
                   onClick={fetchTransactions} 
                   disabled={loading}
+                  size="sm"
                 >
                   <RefreshCw className={`size-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                  {loading ? 'Loading...' : 'Refresh Data'}
+                  {loading ? 'Loading...' : 'Refresh'}
                 </Button>
                 <Button 
                   variant="outline" 
                   onClick={clearCache}
-                  className="text-xs"
+                  size="sm"
                 >
-                  Clear Cache
+                  Clear
                 </Button>
-              </div>
+              </>
             )}
           </div>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
           {/* Search Card */}
-          <div className="bg-card border border-border/40 rounded-lg p-6">
+          <div className="col-span-2 md:col-span-1 bg-card border border-border/40 rounded-lg p-4 md:p-6">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-              <Input placeholder="Search transactions" className="pl-10 bg-background/50 border-border/40" />
+              <Input placeholder="Search..." className="pl-10 bg-background/50 border-border/40" />
             </div>
           </div>
 
           {/* Active Transactions */}
-          <div className="bg-card border border-border/40 rounded-lg p-6">
+          <div className="bg-card border border-border/40 rounded-lg p-4 md:p-6">
             <div className="flex items-start justify-between">
               <div>
-                <div className="text-sm text-muted-foreground mb-2">TOTAL TRANSACTIONS</div>
-                <div className="text-4xl font-bold">{loading ? "..." : transactions.length}</div>
+                <div className="text-xs md:text-sm text-muted-foreground mb-1 md:mb-2">TOTAL</div>
+                <div className="text-2xl md:text-4xl font-bold">{loading ? "..." : transactions.length}</div>
               </div>
-              <Shield className="size-8 text-foreground" />
+              <Shield className="size-6 md:size-8 text-foreground" />
             </div>
           </div>
 
           {/* Failed */}
-          <div className="bg-card border border-border/40 rounded-lg p-6">
+          <div className="bg-card border border-border/40 rounded-lg p-4 md:p-6">
             <div className="flex items-start justify-between">
               <div>
-                <div className="text-sm text-muted-foreground mb-2">FAILED</div>
-                <div className="text-4xl font-bold text-red-500">0</div>
+                <div className="text-xs md:text-sm text-muted-foreground mb-1 md:mb-2">FAILED</div>
+                <div className="text-2xl md:text-4xl font-bold text-red-500">0</div>
               </div>
-              <Shield className="size-8 text-red-500" />
+              <Shield className="size-6 md:size-8 text-red-500" />
             </div>
           </div>
 
           {/* Pending */}
-          <div className="bg-card border border-border/40 rounded-lg p-6">
+          <div className="bg-card border border-border/40 rounded-lg p-4 md:p-6">
             <div className="flex items-start justify-between">
               <div>
-                <div className="text-sm text-muted-foreground mb-2">PENDING</div>
-                <div className="text-4xl font-bold text-primary">0</div>
+                <div className="text-xs md:text-sm text-muted-foreground mb-1 md:mb-2">PENDING</div>
+                <div className="text-2xl md:text-4xl font-bold text-primary">0</div>
               </div>
-              <Shield className="size-8 text-primary" />
+              <Shield className="size-6 md:size-8 text-primary" />
             </div>
           </div>
         </div>
@@ -271,50 +273,55 @@ export default function TransactionsPage() {
       </div>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-2xl bg-card border-border/40">
+        <DialogContent className="max-w-3xl w-[95vw] bg-card border-border/40">
           <DialogHeader>
-            <DialogTitle className="text-3xl font-display mb-2">
-              {selectedTransaction ? formatAddress(selectedTransaction.transactionHash) : ''}
+            <DialogTitle className="text-2xl md:text-3xl font-display mb-2">
+              Transaction Details
             </DialogTitle>
-            <p className="text-muted-foreground font-mono">
-              Block #{selectedTransaction?.blockNumber?.toString()}
+            <p className="text-muted-foreground font-mono text-sm break-all">
+              {selectedTransaction?.transactionHash}
             </p>
           </DialogHeader>
 
-          <div className="grid grid-cols-2 gap-8 py-6">
-            <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-6">
+            <div className="space-y-5">
               <div>
-                <div className="text-sm text-muted-foreground mb-2">STATUS</div>
+                <div className="text-sm text-muted-foreground mb-1">STATUS</div>
                 <div className="flex items-center gap-2">
                   <div className="size-2 rounded-full bg-green-500" />
-                  <span className="uppercase text-lg">Completed</span>
+                  <span className="uppercase text-base font-medium">Completed</span>
                 </div>
               </div>
 
               <div>
-                <div className="text-sm text-muted-foreground mb-2">AMOUNT (SC)</div>
-                <div className="text-2xl font-bold">{selectedTransaction?.amountSC} SC</div>
+                <div className="text-sm text-muted-foreground mb-1">BLOCK NUMBER</div>
+                <div className="text-xl font-bold font-mono">#{selectedTransaction?.blockNumber?.toString()}</div>
               </div>
 
               <div>
-                <div className="text-sm text-muted-foreground mb-2">AMOUNT (ETH)</div>
-                <div className="text-2xl font-bold">{parseFloat(selectedTransaction?.amountBC || '0').toFixed(6)} ETH</div>
+                <div className="text-sm text-muted-foreground mb-1">AMOUNT (SC)</div>
+                <div className="text-xl font-bold">{selectedTransaction?.amountSC} SC</div>
+              </div>
+
+              <div>
+                <div className="text-sm text-muted-foreground mb-1">AMOUNT (ETH)</div>
+                <div className="text-xl font-bold">{parseFloat(selectedTransaction?.amountBC || '0').toFixed(6)} ETH</div>
               </div>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-5">
               <div>
-                <div className="text-sm text-muted-foreground mb-2">BUYER</div>
-                <div className="text-lg font-mono">{selectedTransaction?.buyer}</div>
+                <div className="text-sm text-muted-foreground mb-1">BUYER ADDRESS</div>
+                <div className="text-sm font-mono break-all bg-muted/50 p-2 rounded">{selectedTransaction?.buyer}</div>
               </div>
 
               <div>
-                <div className="text-sm text-muted-foreground mb-2">RECEIVER</div>
-                <div className="text-lg font-mono">{selectedTransaction?.receiver}</div>
+                <div className="text-sm text-muted-foreground mb-1">RECEIVER ADDRESS</div>
+                <div className="text-sm font-mono break-all bg-muted/50 p-2 rounded">{selectedTransaction?.receiver}</div>
               </div>
 
               <div>
-                <div className="text-sm text-muted-foreground mb-2">RISK LEVEL</div>
+                <div className="text-sm text-muted-foreground mb-1">RISK LEVEL</div>
                 <Badge
                   variant="secondary"
                   className={`uppercase text-sm px-3 py-1 ${
@@ -331,9 +338,9 @@ export default function TransactionsPage() {
             </div>
           </div>
 
-          <div className="flex gap-3 pt-4 border-t border-border/40">
+          <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-border/40">
             <Button 
-              className="bg-primary hover:bg-primary/90 text-primary-foreground"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground flex-1 sm:flex-none"
               onClick={() => window.open(`https://sepolia.etherscan.io/tx/${selectedTransaction?.transactionHash}`, '_blank')}
             >
               <ExternalLink className="size-4 mr-2" />
